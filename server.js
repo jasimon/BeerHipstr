@@ -1,58 +1,25 @@
 var express = require('express');
-var https = require('https');
-var fs = require('fs');
+var lcboapi = require('./lcboapi.js');
 var app = express();
 
-const DATA_FILEPATH = 'data/used_beers.txt';
+app.use(express.static(__dirname+'/js'));
+app.use(express.static(__dirname+'/css'));
 
-var options = {
-  hostname: 'lcboapi.com',
-  path: '/products?store_id=511&q=beer&where_not=is_dead,is_discontinued',
-  method: 'GET',
-  headers:  {
-    Authorization: 'Token MDo5MDRjMTU0NC05MjU1LTExZTUtYjBkOS1kMzc3MTBkZTdhZDA6bDJMV0d0QTI5N0R1SWl3bGVMSmZwUE05cTFZdGxaUWZTU2FH',
-  },
-};
-
-var beers = []; 
-var used_ids = [];
-
-fs.readFile(DATA_FILEPATH, 'utf-8', function(err, data) {
-  if(err) {
-    return console.log(err);
-  }
-  console.log(data);
-  used_ids = data.split('\n').map(function(item) {
-    return parseInt(item);
-  });
-  console.log(used_ids);
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + "/index.html");
 });
 
-var req = https.get(options, function(response) {
-  var output = '';
-  response.on('data', function(chunk) {
-    output += chunk;
+app.get('/beerme', function(req, res) {
+  lcboapi.getBeer(function(data) {
+    res.send(data);
   });
+})
 
-  response.on('end', function(chunk) {
-    var data = JSON.parse(output);
-    beers = data.result.filter(function(item) {
-      console.log(used_ids.indexOf(item.id))
-      return used_ids.indexOf(item.id) < 0;
-    });
+var server = app.listen(8080, function() {
+  var host = server.address().address;
+  var port = server.address().port;
 
-    console.log(beers[0]);
-    used_ids.push(beers[0].id);
-    fs.writeFile(DATA_FILEPATH, used_ids.join('\n'), function(err) {
-      if (err) {
-        return console.log(err);
-      }
-      console.log('written');
-    })
-  });
-
-
-}).on('error', function(e){
-  console.log(e);
+  console.log('BeerHipstr web server listening at http://%s:%s', host, port);
 });
+
 
