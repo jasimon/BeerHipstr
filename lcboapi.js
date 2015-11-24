@@ -3,29 +3,25 @@ var fs = require('fs');
 module.exports = (function() {
   const DATA_FILEPATH = 'data/used_beers.txt';
   const BEER_API_PATH = '/products?store_id=511&q=beer&where_not=is_dead,is_discontinued';
+  const AUTH_TOKEN = 'Token MDo5MDRjMTU0NC05MjU1LTExZTUtYjBkOS1kMzc3MTBkZTdhZDA6bDJMV0d0QTI5N0R1SWl3bGVMSmZwUE05cTFZdGxaUWZTU2FH';
   
   var options = {
     hostname: 'lcboapi.com',
-    path: '/products?store_id=511&q=beer&where_not=is_dead,is_discontinued',
     method: 'GET',
     headers:  {
-      Authorization: 'Token MDo5MDRjMTU0NC05MjU1LTExZTUtYjBkOS1kMzc3MTBkZTdhZDA6bDJMV0d0QTI5N0R1SWl3bGVMSmZwUE05cTFZdGxaUWZTU2FH',
+      Authorization: AUTH_TOKEN,
     },
   };
 
   var beers = []; 
-  var used_ids = [];
+  var used_names = [];
   var requestPage = 0;
 
   fs.readFile(DATA_FILEPATH, 'utf-8', function(err, data) {
     if(err) {
       return console.log(err);
     }
-    console.log(data);
-    used_ids = data.split('\n').map(function(item) {
-      return parseInt(item);
-    });
-    console.log(used_ids);
+    used_names = data.split('\n');
   });
 
   function getBeer(callback) {
@@ -42,18 +38,27 @@ module.exports = (function() {
         response.on('end', function(chunk) {
           var data = JSON.parse(output);
           beers = data.result.filter(function(item) {
-            return used_ids.indexOf(item.id) < 0;
+            return used_names.indexOf(item.name) < 0;
           });
+          var aaa = beers.map(function(item) {
+            return {id: item.id, name: item.name};
+          });
+          console.log(aaa);
           if(beers.length > 0) {
             var selected = beers.pop();
-            callback(selected);
-            used_ids.push(selected.id);
-            fs.writeFile(DATA_FILEPATH, used_ids.join('\n'), function(err) {
+            used_names.push(selected.name);
+            //remove any existing beers with the same name
+            beers = beers.filter(function(item) {
+              return used_names.indexOf(item.name) < 0;
+            });
+            fs.writeFile(DATA_FILEPATH, used_names.join('\n'), function(err) {
               if (err) {
                 return console.log(err);
               }
               console.log('written');
             });
+            //send the selected beer to the callback
+            callback(selected);
           } else {
             getBeer(callback);
           }
@@ -63,16 +68,18 @@ module.exports = (function() {
       });
     } else {
       var selected = beers.pop();
-      callback(selected);
-      used_ids.push(selected.id);
-      fs.writeFile(DATA_FILEPATH, used_ids.join('\n'), function(err) {
+      used_names.push(selected.name);
+        beers = beers.filter(function(item) {
+        return used_names.indexOf(item.name) < 0;
+      });
+      fs.writeFile(DATA_FILEPATH, used_names.join('\n'), function(err) {
         if (err) {
           return console.log(err);
         }
         console.log('written');
       });
+      callback(selected);
     }
-   
   }
 
   return {
