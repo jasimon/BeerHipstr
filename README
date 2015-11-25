@@ -1,0 +1,6 @@
+BeerHipstr
+Author: Jacob Simon
+
+This project requires node to run.  It can be run executing the command 'npm start' from the directory of this project.  If you then navigate to 'http://localhost:8080/' you will find the web interface which will allow you to click 'Beer Me!' for a new beer.  Each time you click the result will be different.
+
+Notes: I only realized with less than two hours to go that I had to check inventory as well, hence the awkward mixture of callbacks and promises, it's messier than I would like but I prioritized what I thought was fairly integral behaviour. 
