@@ -28,7 +28,6 @@ module.exports = (function() {
     if (beers.length == 0) {
       requestPage++;
       options.path = BEER_API_PATH + '&page=' + requestPage;
-      console.log(options.path);
       var req = https.get(options, function(response) {
         var output = '';
         response.on('data', function(chunk) {
@@ -41,20 +40,7 @@ module.exports = (function() {
             return used_names.indexOf(item.name) < 0;
           });
           if(beers.length > 0) {
-            var selected = beers.pop();
-            used_names.push(selected.name);
-            //remove any existing beers with the same name
-            beers = beers.filter(function(item) {
-              return used_names.indexOf(item.name) < 0;
-            });
-            fs.writeFile(DATA_FILEPATH, used_names.join('\n'), function(err) {
-              if (err) {
-                return console.log(err);
-              }
-              console.log('written');
-            });
-            //send the selected beer to the callback
-            callback(selected);
+            selectBeer(callback);
           } else {
             getBeer(callback);
           }
@@ -63,19 +49,26 @@ module.exports = (function() {
         console.log(e);
       });
     } else {
-      var selected = beers.pop();
-      used_names.push(selected.name);
-        beers = beers.filter(function(item) {
-        return used_names.indexOf(item.name) < 0;
-      });
-      fs.writeFile(DATA_FILEPATH, used_names.join('\n'), function(err) {
-        if (err) {
-          return console.log(err);
-        }
-        console.log('written');
-      });
-      callback(selected);
+      selectBeer(callback);
     }
+  }
+
+  function selectBeer(callback) {
+    var selected = beers.pop();
+    used_names.push(selected.name);
+    //remove any existing beers with the same name
+    beers = beers.filter(function(item) {
+      return used_names.indexOf(item.name) < 0;
+    });
+    fs.writeFile(DATA_FILEPATH, used_names.join('\n'), function(err) {
+      if (err) {
+        return console.log(err);
+      }
+      console.log('written');
+    });
+    //send the selected beer to the callback
+    callback(selected);
+
   }
 
   return {
