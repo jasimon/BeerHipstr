@@ -1,0 +1,45 @@
+html { 
+  background: url(Draft-Beer.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+  background-color: transparent;
+  font-size: 14px;
+  font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+}
+
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.beer-container {
+  width: 365px;
+  height: 500px;
+  margin: auto;
+  border-radius: 5px;
+  background-image: linear-gradient(to bottom,rgba(60,60,60,0.9) 0,rgba(34,34,34,0.9) 100%); 
+  text-align: center;
+  padding:10px;
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+.beer-data span {
+  display: inline-block;
+}
+
+.beer-container span, .beer-container h4 {
+  color: #ffffff;
+}

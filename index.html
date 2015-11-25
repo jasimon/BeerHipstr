@@ -1,6 +1,7 @@
 <html>
   <head>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.min.js"></script>
     <script type="text/javascript" src="/index.js"></script>
 
         <!-- Latest compiled and minified CSS -->
@@ -11,17 +12,25 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/index.css">
+    <script id="beer-info-template" type="text/x-handlebars-template">
+      <div class="beer-data">
+        <span>Your beer today is {{name}}, produced by {{producer_name}}.</span>  
+        <img src={{image_thumb_url}}></img>
+      </div>
+    </script>
   </head>
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">
-            BeerHipstr
-          </a>
+    <div class="outer">
+      <div class="middle">
+        <div class='beer-container'>
+          <h4>Welcome to BeerHipstr!</h4>
+          <span class='show-init'>For a new beer click the button below</span>
+          <div class='results-container'>
+          </div>
+          <button type="button" class="btn btn-danger navbar-btn beerme">Beer Me!</button>
         </div>
       </div>
-    </nav>
-    <button type="button" class="btn btn-primary beerme">Beer Me!</button>
+    </div>
   </body>
 </html>

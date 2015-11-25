@@ -40,10 +40,6 @@ module.exports = (function() {
           beers = data.result.filter(function(item) {
             return used_names.indexOf(item.name) < 0;
           });
-          var aaa = beers.map(function(item) {
-            return {id: item.id, name: item.name};
-          });
-          console.log(aaa);
           if(beers.length > 0) {
             var selected = beers.pop();
             used_names.push(selected.name);
