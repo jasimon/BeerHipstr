@@ -1,0 +1,33 @@
+Molson Canadian,1449845537351
+Coors Light,1449845905957
+Stella Artois,1449845909060
+Miller Genuine Draft,1449845909739
+Laker Ice,1449845910436
+Lowenbrau Original,1449845911030
+Old Milwaukee,1449845911601
+Heineken,1449845912186
+Budweiser,1449845912730
+Corona Extra,1449845913268
+Busch,1449845914025
+Labatt Blue,1449845914623
+Bud Light,1449845915238
+Dab Original,1449845915848
+Old Milwaukee Ice,1449845916620
+Sapporo Premium Beer,1449845917849
+Molson Canadian Cold Shots 6.0.,1449845920313
+Tuborg Gold,1449845921203
+Mill Street Original Organic Lager,1449845921937
+Grolsch Premium Lager,1449846246406
+Moosehead,1449846570167
+Bavaria of Holland,1449846599300
+Beck's,1449846796512
+Coors Banquet,1449846886851
+Alexander Keith's India Pale Ale,1449846890503
+Pabst Blue Ribbon,1449846922592
+James Ready 5.5.,1449846929108
+Beau's Lug Tread Lagered Ale,1449846968228
+Steam Whistle Premium Pilsner,1449846971209
+Guinness Draught,1449846975898
+Lezajsk Beer,1449847001453
+Heineken Holiday Bottle,1449847004752
+Holsten Premium Pilsner,1449847007951

@@ -26,8 +26,11 @@ module.exports = (function() {
     if(err) {
       return console.log(err);
     }
-    used_names = data.split('\n');
-
+    used_names = data.split('\n').filter(function(row) {
+      return row !== '';
+    }).map(function(row) {
+      return {name: row.split(',')[0], date:parseInt(row.split(',')[1]) }
+    });
   });
 
   function getBeer(callback) {
@@ -43,13 +46,16 @@ module.exports = (function() {
         response.on('end', function(chunk) {
           var data = JSON.parse(output);
           beers = data.result.filter(function(item) {
-            return used_names.indexOf(item.name) < 0;
+            var matches = used_names.filter(function(row) {
+              return row.name === item.name;
+            });
+            return matches.length === 0;
           });
           if(beers.length > 0) {
             
           checkQuantity()
             .then(function() {
-              callback(selectBeer());
+              callback(selectBeer(), used_names.slice(-10).reverse());
             }, function(err) {
               if (err === "ERR_NO_MATCHES") {
                 getBeer(callback);
@@ -63,18 +69,24 @@ module.exports = (function() {
         console.log(e);
       });
     } else {
-      callback(selectBeer());
+      callback(selectBeer(), used_names.slice(-10).reverse());
     }
   }
 
   function selectBeer() {
     var selected = beers_in_stock.pop();
-    used_names.push(selected.name);
+    used_names.push({name: selected.name, date:new Date().getTime()});
     //remove any existing beers with the same name
     beers_in_stock = beers_in_stock.filter(function(item) {
-      return used_names.indexOf(item.name) < 0;
+      var matches = used_names.filter(function(row) {
+        return row.name === item.name;
+      });
+      return matches.length === 0;
     });
-    fs.writeFile(DATA_FILEPATH, used_names.join('\n'), function(err) {
+    var namesString = used_names.reduce(function(prev, curr) {
+      return prev + curr.name + ',' + curr.date + '\n';
+    }, '');
+    fs.writeFile(DATA_FILEPATH, namesString, function(err) {
       if (err) {
         return console.log(err);
       }

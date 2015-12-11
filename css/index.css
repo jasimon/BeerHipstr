@@ -43,3 +43,8 @@ body {
 .beer-container span, .beer-container h4 {
   color: #ffffff;
 }
+
+.last-ten-container {
+  background-color: white;
+  position: absolute;
+}

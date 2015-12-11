@@ -11,8 +11,8 @@ app.get('/', function(req, res) {
 });
 
 app.get('/beerme', function(req, res) {
-  lcboapi.getBeer(function(data) {
-    res.send(data);
+  lcboapi.getBeer(function(beer, lastTen) {
+    res.send({beer:beer, lastTen: lastTen});
   });
 })
 
